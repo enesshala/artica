@@ -2,7 +2,7 @@
 var loading;
 
 function onLoad() {
-    loading = setTimeout(showPage, 3000);
+    loading = setTimeout(showPage, 100);
 }
 
 function showPage() {
@@ -198,3 +198,133 @@ document.addEventListener('keyup', function (e) {
 });
 
 loadGallery();
+
+// Contact From
+const form = document.getElementById("contact-form");
+const name = document.getElementById("name");
+const email = document.getElementById("email");
+const phoneNumber = document.getElementById("phone");
+
+form.addEventListener("submit", (e) => {
+    validateForm(e);
+});
+
+
+function validateForm(e) {
+    const nameInput = name.value.trim();
+    const emailInput = email.value.trim();
+    const phoneNumberInput = phoneNumber.value.trim();
+    const issueSelected = issues.value;
+    const subjectInput = subject.value.trim();
+    const messageInput = message.value.trim();
+
+    let counter = 0;
+
+    if (nameInput === "") {
+        alert("Field can not be empty!");
+    } else if (hasNumbers(nameInput)) {
+        alert("Field should contain letters only!");
+    } else if (nameInput.length < 3) {
+        alert("Name should be greater than 3 letters!");
+    } else {
+        counter++;
+    }
+
+    if (emailInput === "") {
+        alert("Field can not be empty!");
+    } else if (!isEmail(emailInput)) {
+        alert("Invalid email format!");
+    } else {
+        counter++;
+    }
+
+
+    if (phoneNumberInput === "") {
+        alert("Field can not be empty!");
+    } else if (!phoneNumberRegex(phoneNumberInput)) {
+        alert("Invalid phone number...");
+    } else {
+        counter++;
+    }
+
+    // GENDER
+    let genderSelected = "";
+    for (let i = 0; i < genders.length; i++) {
+        if (genders[i].checked) {
+            console.log(genders[i].value);
+            genderSelected = genders[i].value;
+        }
+    }
+
+    if (genderSelected === "") {
+        alert("Select gender!")
+    } else {
+        counter++;
+    }
+
+    // SPORTS
+    let sportsSelected = [];
+    for (let i = 0; i < sports.length; i++) {
+        if (sports[i].checked) {
+            sportsSelected.push(sports[i]);
+        }
+    }
+
+    console.log(sportsSelected);
+
+    if (sportsSelected.length === 0) {
+        alert("Select a sport!");
+    } else {
+        counter++;
+    }
+
+    // ISSUES
+    if (issueSelected === "issue") {
+        alert("Select an issue");
+    } else {
+        counter++;
+    }
+
+    if (subjectInput === "") {
+        alert("Field can not be empty!");
+    } else {
+        counter++;
+    }
+
+    if (messageInput === "") {
+        alert("Field can not be empty!");
+    } else {
+        counter++;
+    }
+
+    if (counter === 8) {
+        successMsg.style.display = "block";
+        successMsg.style.color = "#4cb944";
+        successMsg.innerHTML = "Message sent Successfully!";
+    } else {
+        e.preventDefault();
+        successMsg.style.display = "block";
+        successMsg.innerHTML = "Opss! Something went wrong!";
+    }
+}
+
+function isEmail(email) {
+    return /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/.test(
+        email
+    );
+}
+
+function passwordRegex(password) {
+    return /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{6,}$/.test(
+        password
+    );
+}
+
+function phoneNumberRegex(phoneNumber) {
+    return /^(\d{2}\-)?\d{3}\-\d{3}$/.test(phoneNumber);
+}
+
+function hasNumbers(name) {
+    let hasNumber = /\d/;
+    return hasNumber.test(name);
+}
